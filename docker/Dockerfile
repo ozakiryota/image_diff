@@ -19,7 +19,8 @@ RUN apt-get update && \
 		imagemagick && \
 	pip3 install \
 		opencv-python \
-		pillow
+		pillow \
+		matplotlib
 ########## Cache Busting ##########
 ARG CACHEBUST=1
 ########## image_diff ##########
