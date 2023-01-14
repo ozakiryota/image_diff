@@ -18,6 +18,7 @@ class ImageDiffWithCsv:
         arg_parser.add_argument('--read_csv_path_1', required=True)
         arg_parser.add_argument('--target_col_1', type=int, default=0)
         arg_parser.add_argument('--write_dir_path')
+        arg_parser.add_argument('--write_image_path', default='../save/sorted.png')
         return arg_parser
 
     def getFileList(self, csv_path, target_col):
@@ -52,6 +53,7 @@ class ImageDiffWithCsv:
             plt.tick_params(labelbottom=False, labelleft=False, bottom=False, left=False)
             plt.imshow(img_list_list[index][2])
         plt.tight_layout()
+        plt.savefig(self.args.write_image_path)
         plt.show()
 
     def exec(self):
