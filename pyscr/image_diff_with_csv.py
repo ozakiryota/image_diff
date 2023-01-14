@@ -64,11 +64,20 @@ class ImageDiffWithCsv:
         diff_value_list = []
 
         for file_path_0, file_path_1 in zip(file_path_list_0, file_path_list_1):
-            ## compute
+            ## open
             img_0 = cv2.imread(file_path_0)
             img_0 = cv2.cvtColor(img_0, cv2.COLOR_BGR2RGB)
             img_1 = cv2.imread(file_path_1)
             img_1 = cv2.cvtColor(img_1, cv2.COLOR_BGR2RGB)
+            ## resize
+            height, width, _ = img_0.shape
+            if img_1.shape[0] < height:
+                height = img_1.shape[0]
+            if img_1.shape[1] < width:
+                width = img_1.shape[1]
+            img_0 = cv2.resize(img_0, (width, height))
+            img_1 = cv2.resize(img_1, (width, height))
+            ## diff
             diff_img = getDiffImage(img_0, img_1)
             diff_value = diff_img.mean()
             ## save
@@ -80,7 +89,7 @@ class ImageDiffWithCsv:
             img_list_list.append([img_0, img_1, diff_img])
             diff_value_list.append(diff_value)
         sorted_indicies = np.argsort(diff_value_list)
-        self.showImages(img_list_list, sorted_indicies, 2, 5)
+        self.showImages(img_list_list, sorted_indicies, 2, 10)
 
 
 if __name__ == '__main__':
