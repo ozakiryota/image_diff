@@ -5,4 +5,4 @@ tag="latest"
 
 docker build . \
     -t $image:$tag \
-    --build-arg CACHEBUST=$(date +%s)
+    --build-arg cachebust=$(date +%s)
