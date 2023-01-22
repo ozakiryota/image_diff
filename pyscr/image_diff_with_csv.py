@@ -5,11 +5,12 @@ import cv2
 import numpy as np
 import matplotlib.pyplot as plt
 
-from image_diff import getDiffImage
+from image_diff import ImageDiff
 
 class ImageDiffWithCsv:
     def __init__(self):
         self.args = self.setArgument().parse_args()
+        self.diff_getter = ImageDiff(self.args.flag_use_feature)
     
     def setArgument(self):
         arg_parser = argparse.ArgumentParser()
@@ -17,6 +18,7 @@ class ImageDiffWithCsv:
         arg_parser.add_argument('--target_col_0', type=int, default=0)
         arg_parser.add_argument('--read_csv_path_1', required=True)
         arg_parser.add_argument('--target_col_1', type=int, default=0)
+        arg_parser.add_argument('--flag_use_feature', action='store_true')
         arg_parser.add_argument('--write_dir_path')
         arg_parser.add_argument('--write_image_path', default='../save/sorted.png')
         return arg_parser
@@ -80,7 +82,10 @@ class ImageDiffWithCsv:
             img_0 = cv2.resize(img_0, (width, height))
             img_1 = cv2.resize(img_1, (width, height))
             ## diff
-            diff_img = getDiffImage(img_0, img_1)
+            if self.args.flag_use_feature:
+                diff_img = self.diff_getter.getDiffFeature(img_0, img_1)
+            else:
+                diff_img = self.diff_getter.getDiffImage(img_0, img_1)
             diff_value = diff_img.mean()
             ## save
             diff_img_name = os.path.basename(file_path_0).split('.')[0] + "_diff.png"
